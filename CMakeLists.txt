@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.8.8)
 
 project(kube-cpp-client CXX)
 
-set(KUBE_CLI_INC include CACHE INTERNAL "")
+set(KUBE_CLI_INC ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "")
+set(KUBE_CLI_LIB kubecli CACHE INTERNAL "")
 
 if(NOT ${CMAKE_VERSION} LESS 3.2)
     set(CMAKE_CXX_STANDARD 11)
@@ -26,3 +27,5 @@ endif()
 add_subdirectory(ext)
 
 add_subdirectory(src)
+
+add_subdirectory(test)
