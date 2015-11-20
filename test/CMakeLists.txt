@@ -15,3 +15,9 @@ set(test2_SRCS test2.cpp)
 add_executable(test2 ${test2_SRCS})
 target_link_libraries(test2
     ${KUBE_CLI_LIB})
+
+set(test3_SRCS test3.cpp)
+add_executable(test3 ${test3_SRCS})
+target_link_libraries(test3 
+    ${KUBE_CLI_LIB}
+    ${CURL_LIBRARIES})

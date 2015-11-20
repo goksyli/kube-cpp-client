@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <stdint.h>
 #include <cstring>
@@ -17,7 +18,7 @@ private:
     uint16_t _port;  // 80,443
     string _path;    // /mail/
     string _query;   // [after ?] a=b&c=b
-
+    string _rawstr;
 public:
     const string &protocol;
     const string &domain;
@@ -52,7 +53,13 @@ public:
         this->_query = (qmark_pos = urlpath.find("?"))!=string::npos ? urlpath.substr(qmark_pos+1) : "";
         this->_path = qmark_pos!=string::npos ? urlpath.substr(0,qmark_pos) : urlpath;
         this->_port = urlport.length()==0 ? default_port : _atoi(urlport) ;
+        this->_rawstr = url;
     };
+    const char * c_str()const
+    {
+        return this->_rawstr.c_str();
+    };
+
 private:
     static inline string _trim(const string& input)
     {
