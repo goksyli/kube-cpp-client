@@ -14,8 +14,20 @@ request* curlclient::Get(std::string url)
 {
 //   threads.push_back(std::thread(thread_get,c,url));
    /*TODO need to consider where to put join*/
-   return new request(url,this);
+   return new request("GET",url,"",this);
 }
+
+request* curlclient::Post(std::string url,std::string body)
+{
+    return new request("POST",url,body,this);
+}
+
+request* curlclient::Delete(std::string url)
+{
+    return new request("DELETE",url,"",this);
+}
+
+
 
 CURL * curlclient::get_curl()
 {
@@ -29,11 +41,14 @@ void thread_get(curlclient* client,CURLcode &res)
     res = curl_easy_perform(client->get_curl());
 }
 
-request::request(std::string url, curlclient *c)
+request::request(std::string verb, 
+        std::string url,std::string body, curlclient *c)
     :mUrl(url),
     listfunc(&wr_list),
     watchfunc(&wr_watch),
-    mclient(c)
+    mclient(c),
+    mVerb(verb),
+    post_body(body)
 {
     /*don't wory, std::thread is moveable*/
 //    worker = std::thread(thread_get, c ,*this);
@@ -45,6 +60,17 @@ request::~request()
 
 std::string request::list()
 {
+    if( mVerb == "POST"){
+        struct curl_slist *slist = nullptr;
+        slist = curl_slist_append(slist, "Content-Type: application/json");
+        curl_easy_setopt(mclient->get_curl(),CURLOPT_HTTPHEADER,slist);
+
+        curl_easy_setopt(mclient->get_curl(),CURLOPT_POST,1);
+        curl_easy_setopt(mclient->get_curl(),CURLOPT_POSTFIELDS,post_body.c_str());
+    }
+    else if( mVerb == "DELETE"){
+        curl_easy_setopt(mclient->get_curl(),CURLOPT_CUSTOMREQUEST,"DELETE");
+    }
     curl_easy_setopt(mclient->get_curl(), CURLOPT_URL,mUrl.c_str());
     /*register write call back and call back context*/
     curl_easy_setopt(mclient->get_curl(), CURLOPT_WRITEDATA,this);

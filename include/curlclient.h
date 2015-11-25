@@ -15,14 +15,17 @@ public:
 //    friend void thread_get(CURL *c,request& req);
     friend size_t wr_list(char *buffer, size_t size, size_t nmemb, void * user_p);
     friend size_t wr_watch(char *buffer, size_t size, size_t nmemb, void * user_p);
-    request(std::string url,curlclient *c);
+    request(std::string verb, 
+            std::string url,std::string body,curlclient *c);
     virtual ~request();
     std::string list();
     void watch();
     std::string read_stream(); 
 private:
     std::string mUrl;
+    std::string mVerb;
     std::thread worker;
+    std::string post_body;
     std::mutex locker;
     std::string strResult;
     std::string error;
@@ -43,6 +46,9 @@ public:
     virtual ~curlclient();
 
     request* Get(std::string url);
+    //TODO add post body parameter
+    request* Post(std::string url,std::string body);
+    request* Delete(std::string url);
 
     CURL * get_curl();
 private:
