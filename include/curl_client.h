@@ -1,4 +1,5 @@
-#include "http_client.h"
+#pragma once
+#include <http_client.h>
 
 
 class curl_client : public http_client
