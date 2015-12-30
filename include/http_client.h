@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string>
 struct http_request
 {
     std::string verb;

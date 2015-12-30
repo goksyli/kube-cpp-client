@@ -15,6 +15,7 @@ public:
     request &set_res(std::string res){ _resource=res;return *this;} 
     request &set_body(std::string body){_body=body;return *this;}
     request &set_name(std::string name){_resource_name=name;return *this;}
+    request &set_prefix(std::string prefix){ _path = prefix + _path;return *this;} 
 
     using param_map = std::unordered_map<std::string,std::string>;
     http_client     *_client;

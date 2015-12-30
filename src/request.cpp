@@ -1,5 +1,5 @@
 #include <request.h>
-
+#include <thread>
 request::request( http_client *client,std::string verb, std::string base_url )
     :_client(client),_verb(verb),_base_url(base_url)
 {
@@ -23,7 +23,7 @@ void request::watch()
     });
 }
 
-std::string url()
+std::string request::url()
 {   // _base_url include ports
     return _base_url + _path + _resource + _resource_name;
 }

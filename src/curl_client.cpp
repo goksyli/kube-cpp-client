@@ -8,12 +8,12 @@ std::string curl_client::Do(http_request req)
     CURLcode res;
     easyhandle = curl_easy_init();
 
-    if(curl){
+    if(easyhandle){
 
    //     curl_easy_setopt(easyhandle,CURLOPT_WRITEFUNCTION,write_cb);
     //    curl_easy_setopt(easyhandle,CURLOPT_WRITEDATA,this);
 
-        curl_easy_setopt(easyhandle,CURLOPT_URL,req.url);
+        curl_easy_setopt(easyhandle,CURLOPT_URL,req.url.c_str());
         if( req.verb == "POST" )
         {
             curl_easy_setopt(easyhandle,CURLOPT_POSTFIELDS,req.body.c_str());
@@ -31,7 +31,7 @@ std::string curl_client::Do(http_request req)
 
         curl_easy_cleanup(easyhandle);
     }
-    return _result;
+    return result;
 }
 
 size_t curl_client::write_cb(char *ptr,size_t size, size_t nmemb,void *userp)
